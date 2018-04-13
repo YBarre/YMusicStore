@@ -63,7 +63,6 @@ namespace MusicStoreClient
                         IList<Sample> samples = await getAllSamples();
                         foreach (Sample sample in samples)
                         {
-                            Console.WriteLine("Id", " ", "Title", " ", "Artist", " SampleURL");
                             Console.WriteLine(" {0}, {1}, {2}, {3}, {4}",
                                 sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url, line);
                         }
