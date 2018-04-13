@@ -19,11 +19,13 @@ namespace MusicStore_Webjob
     {
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
-        public static void GenerateThumpnails(
-        [QueueTrigger("mp3maker")] SampleEntity entityInQueue,
+        public static void GenerateSample(
+        [QueueTrigger("samplemaker")] SampleEntity entityInQueue,
         [Table("samples", "{PartitionKey}", "{RowKey}")] SampleEntity entityInTable,
         [Table("samples")] CloudTable tableBinding,
+
         TextWriter logger)
+
         {
             try
             {

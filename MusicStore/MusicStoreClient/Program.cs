@@ -21,8 +21,9 @@ namespace MusicStoreClient
         static string clientUri = client.BaseUri.GetLeftPart(UriPartial.Authority);
 
         // Inititialise CLI menu UI constructs
-        static string div = " ------------------------------------------------------------ \n";
-        static string tripleDiv = div + div + div;
+        static string welcome = " Y Barre Coursework";
+        static string line = " -------------------------------------\n";
+   
 
         static void Main(string[] args)
         {
@@ -37,7 +38,8 @@ namespace MusicStoreClient
             do
             {
                 // Write menu options to console
-                Console.WriteLine(" \n" + tripleDiv);
+                Console.WriteLine(" \n" + welcome);
+                Console.WriteLine(" \n" + line);
                 Console.WriteLine(" 1 : List all sample entities");
                 Console.WriteLine(" 2 : List a specific sample entity");
                 Console.WriteLine(" 3 : Create a new sample entity");
@@ -57,18 +59,19 @@ namespace MusicStoreClient
                 {
                     // Gets and displays all samples in table - GET
                     case 1:
-                        Console.WriteLine(div + " Display all samples: \n");
+                        Console.WriteLine(line + " Display all samples: \n");
                         IList<Sample> samples = await getAllSamples();
                         foreach (Sample sample in samples)
                         {
-                            Console.WriteLine(" {0}\n {1}\n {2}\n {3}\n {4}",
-                                sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url, div);
+                            Console.WriteLine("Id", " ", "Title", " ", "Artist", " SampleURL");
+                            Console.WriteLine(" {0}, {1}, {2}, {3}, {4}",
+                                sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url, line);
                         }
                         break;
 
                     // Get specific entity from table by id - GET
                     case 2:
-                        Console.WriteLine(div + " Enter ID of sample to display:");
+                        Console.WriteLine(line + " Enter ID of sample to display:");
                         string id = Console.ReadLine();
                         HttpOperationResponse<Sample> getResponse = await getSample(id);
                         if (getResponse.Response.IsSuccessStatusCode)
