@@ -1,0 +1,182 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "MusicStore"
+  },
+  "host": "localhost:50699",
+  "schemes": [ "http" ],
+  "paths": {
+    "/api/Samples": {
+      "get": {
+        "tags": [ "Samples" ],
+        "summary": "Get a list of all samples",
+        "operationId": "Samples_Get",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Sample" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Samples" ],
+        "summary": "Create a new Sample entity",
+        "operationId": "Samples_PostSample",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Sample" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Sample" }
+          },
+          "201": { "description": "Created" }
+        }
+      },
+      "delete": {
+        "tags": [ "Samples" ],
+        "summary": "Deletes all blobs associated with an entity",
+        "operationId": "Samples_deleteBlobs",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "sampleEntity",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "schema": { "$ref": "#/definitions/SampleEntity" }
+          }
+        ],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/Samples/{id}": {
+      "get": {
+        "tags": [ "Samples" ],
+        "summary": "Returns a specfic sample by ID",
+        "operationId": "Samples_GetSample",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Sample" }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Samples" ],
+        "summary": "Update a SampleEntity from PUT operation",
+        "operationId": "Samples_PutSample",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sample",
+            "in": "body",
+            "description": "",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Sample" }
+          }
+        ],
+        "responses": { "204": { "description": "NoContent" } }
+      },
+      "delete": {
+        "tags": [ "Samples" ],
+        "summary": "Deletes SampleEntity from table and all associated blobs",
+        "operationId": "Samples_deleteSample",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": { "204": { "description": "NoContent" } }
+      }
+    }
+  },
+  "definitions": {
+    "Sample": {
+      "type": "object",
+      "properties": {
+        "SampleID": {
+          "description": "Sample ID",
+          "type": "string"
+        },
+        "Title": {
+          "description": "Title of the sample",
+          "type": "string"
+        },
+        "Artist": {
+          "description": "Artist Name",
+          "type": "string"
+        },
+        "SampleMp3Url": {
+          "description": "the blob sample url",
+          "type": "string"
+        }
+      }
+    },
+    "SampleEntity": {
+      "type": "object",
+      "properties": {
+        "Title": { "type": "string" },
+        "Artist": { "type": "string" },
+        "CreatedDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "Mp3Blob": { "type": "string" },
+        "SampleMp3Blob": { "type": "string" },
+        "SampleMp3Url": { "type": "string" },
+        "SampleDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "PartitionKey": { "type": "string" },
+        "RowKey": { "type": "string" },
+        "Timestamp": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "ETag": { "type": "string" }
+      }
+    }
+  }
+}
