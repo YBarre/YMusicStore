@@ -20,9 +20,11 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace MusicStore.Controllers
 {
- 
-    // Controller class to download mp3s from a specific URL
-  
+
+
+    /// <summary>
+    /// data controler class
+    /// </summary>
     public class DataController : ApiController
     {
         const String partitionName = "Samples_Partition_1";
@@ -49,9 +51,9 @@ namespace MusicStore.Controllers
 
         // GET: api/Data/5
         /// <summary>
-        /// Gets blob from storage and returns it as a stream within a HTTP Response message
+        /// 
         /// </summary>
-        /// <param name="sample"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [SwaggerResponse(HttpStatusCode.OK)]
         [ResponseType(typeof(StreamContent))]

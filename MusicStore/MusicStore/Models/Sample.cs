@@ -7,8 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MusicStore.Models
 {
-
-    // class for sample data type, used for serialisation
+    /// <summary>
+    /// Sample class 
+    /// </summary>
  
     public class Sample
     {

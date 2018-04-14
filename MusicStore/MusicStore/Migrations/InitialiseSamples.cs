@@ -34,14 +34,16 @@ namespace MusicStore.Migrations
                     table.CreateIfNotExists();
 
                     // Create array of national anthem titles, also will be used as the Artist values
-                    string[] titles = { "China", "France", "Italy", "Russia", "U.S.A", "United Kingdom" };
+                    string[] titles = { "Aqualung", "Songs from the wood", "Wish you were there", "Still life",
+                                        "Musical Box", "Supper's Ready" };
+                    string[] artist = { "Jethro Tull", "Jethro Tull", "Pink Floyd", "Van der Graaf", "genesis" };
 
                     // Loop to iterate over titles array to create entities
                     for (int idx = 0; idx < titles.Length; idx++)
                     {
                         SampleEntity sampleEntity = new SampleEntity(partitionName, getNewMaxRowKeyValue());
                         sampleEntity.Title = titles[idx];
-                        sampleEntity.Artist = titles[idx];
+                        sampleEntity.Artist = artist[idx];
                         sampleEntity.CreatedDate = DateTime.Now;
                         sampleEntity.Mp3Blob = null;
                         sampleEntity.SampleMp3Blob = null;

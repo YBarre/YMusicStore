@@ -11,6 +11,9 @@ using MusicStore.Migrations;
 
 namespace MusicStore
 {
+    /// <summary>
+    /// will initilise here
+    /// </summary>
     public class Global : HttpApplication
     {
         void Application_Start(object sender, EventArgs e)

@@ -19,12 +19,13 @@ namespace MusicStore_Webjob
     {
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
+        
         public static void GenerateSample(
-        [QueueTrigger("samplemaker")] SampleEntity entityInQueue,
-        [Table("samples", "{PartitionKey}", "{RowKey}")] SampleEntity entityInTable,
-        [Table("samples")] CloudTable tableBinding,
+       [QueueTrigger("audiosamplemaker")] SampleEntity sampleInQueue,
+ [Table("Samples", "{PartitionKey}", "{RowKey}")] SampleEntity sampleInTable,
+ [Table("Samples")] CloudTable tableBinding, TextWriter logger)
 
-        TextWriter logger)
+  
 
         {
             try
@@ -36,11 +37,11 @@ namespace MusicStore_Webjob
 
                 // Get full audio as input blob from blob container
                 var inputBlob = blobContainer.GetDirectoryReference(fullAudioPath)
-                    .GetBlobReference(entityInTable.Mp3Blob);
+                    .GetBlobReference(sampleInTable.Mp3Blob);
 
                 // Generates unique name for sample blob and updates entity
-                string sampleName = string.Format("{0}-{1}{2}", Guid.NewGuid(), entityInTable.Title, ".mp3");  /* !!!! CHANGE SO ITS GETS THE RIGHT NAME !!!! */
-                entityInTable.SampleMp3Blob = sampleName;
+                string sampleName = string.Format("{0}-{1}{2}", Guid.NewGuid(), sampleInTable.Title, ".mp3");  /* !!!! CHANGE SO ITS GETS THE RIGHT NAME !!!! */
+                sampleInTable.SampleMp3Blob = sampleName;
 
                 // Get reference to block blob to write sample to as output blob
                 var outputBlob = blobContainer.GetBlockBlobReference(samplePath + sampleName);
@@ -54,10 +55,10 @@ namespace MusicStore_Webjob
                 }
 
                 // Update sample date
-                entityInTable.SampleDate = DateTime.Now;
+                sampleInTable.SampleDate = DateTime.Now;
 
                 // Creates and executes an update operation to update the entity in the table
-                TableOperation updateOperation = TableOperation.InsertOrReplace(entityInTable);
+                TableOperation updateOperation = TableOperation.InsertOrReplace(sampleInTable);
                 tableBinding.Execute(updateOperation);
             }
             catch (Exception ex)

@@ -7,8 +7,14 @@ using Swashbuckle.Application;
 
 namespace MusicStore
 {
+    /// <summary>
+    /// Sawgger config class
+    /// </summary>
     public class SwaggerConfig
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;

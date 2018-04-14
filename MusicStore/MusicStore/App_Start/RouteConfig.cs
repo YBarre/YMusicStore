@@ -7,8 +7,15 @@ using System.Web.Routing;
 
 namespace MusicStore
 {
+    /// <summary>
+    /// routConfig
+    /// </summary>
     public class RouteConfig
     {
+        /// <summary>
+        /// Register 
+        /// </summary>
+        /// <param name="routes"></param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

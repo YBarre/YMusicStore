@@ -8,39 +8,62 @@ using Microsoft.WindowsAzure.Storage.Table;
 namespace MusicStore.Models
 {
   
+    /// <summary>
+    /// Sample entitiy class
+    /// </summary>
     public class SampleEntity : TableEntity
     {
-        // The title of the song
+        /// <summary>
+        /// Title of the MP3
+        /// </summary>
         public string Title { get; set; }
 
-        // Name of artist
+        /// <summary>
+        /// Name of the artist
+        /// </summary>
         public string Artist { get; set; }
 
-        // date of record creation
+        /// <summary>
+        /// date Blob created
+        /// </summary>
         public DateTime CreatedDate { get; set; }
 
-        // MP3 audio blob
+        /// <summary>
+        /// Full MP3 blob
+        /// </summary>
         public string Mp3Blob { get; set; }
 
-        // sample MP3 blob
+        /// <summary>
+        /// Sample MP3 blob
+        /// </summary>
         public string SampleMp3Blob { get; set; }
 
-        // URL of the sample
+        /// <summary>
+        /// Sample MP3 URL
+        /// </summary>
         public string SampleMp3Url { get; set; }
 
 
-        // Date sample was created
+        /// <summary>
+        /// Date Sample created
+        /// </summary>
         public DateTime SampleDate { get; set; }
  
 
-        // overloaded constructor of the class
+        /// <summary>
+        /// Overloaded Constructor
+        /// </summary>
+        /// <param name="partitionKey"></param>
+        /// <param name="sampleID"></param>
         public SampleEntity(string partitionKey, string sampleID)
         {
             PartitionKey = partitionKey;
             RowKey = sampleID;
         }
 
-        // Empty constructor
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public SampleEntity() { }
     }
 }

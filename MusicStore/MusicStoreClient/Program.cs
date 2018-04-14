@@ -32,7 +32,7 @@ namespace MusicStoreClient
 
         static async Task RunClient()
         {
-            // Initialise menu selection and start do while loop for menu
+            // start the menu selection
             int selection = -1;
 
             do
@@ -49,22 +49,24 @@ namespace MusicStoreClient
                 Console.WriteLine(" 7 : Download and mp3 sample to local filesystem");
                 Console.WriteLine(" 0 : EXIT");
 
-                // Get user input for menu selection
-                Console.WriteLine("\n" + "Please Choose an option from the menu: ");
+                // get the selection from the user
+                Console.WriteLine("\n" + "Please Choose an option: ");
 
                 try { selection = Int32.Parse(Console.ReadLine()); }
-                catch (Exception ex) { Console.WriteLine("Invalid input, please enter a valid number"); }
+                catch (Exception ex)
+                { Console.WriteLine("Invalid input, please enter a valid number", ex.Message); }
 
                 switch (selection)
                 {
                     // Gets and displays all samples in table - GET
                     case 1:
                         Console.WriteLine(line + " Display all samples: \n");
+                        Console.WriteLine("ID - Title - Artist - Sample URL");
                         IList<Sample> samples = await getAllSamples();
                         foreach (Sample sample in samples)
                         {
-                            Console.WriteLine(" {0}, {1}, {2}, {3}, {4}",
-                                sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url, line);
+                            Console.WriteLine("{0} --  {1} --  {2} --  {3}",
+                                sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url);
                         }
                         break;
 
