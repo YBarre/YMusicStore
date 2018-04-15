@@ -73,7 +73,7 @@ namespace MusicStore.Migrations
         }
 
         // Getting all keys in table and returns next highest possible key value
-       
+
         private static String getNewMaxRowKeyValue()
         {
             const String partitionName = "Samples_Partition_1";

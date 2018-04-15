@@ -140,6 +140,8 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Properties\webjobs-list.json" />
+    <None Include="Properties\PublishProfiles\courseworkB - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\courseworkB - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -149,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

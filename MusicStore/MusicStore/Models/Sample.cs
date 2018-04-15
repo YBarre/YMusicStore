@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MusicStore.Models
 {
     /// <summary>
-    /// Sample class 
+    /// Sample DTO Class
     /// </summary>
  
     public class Sample
