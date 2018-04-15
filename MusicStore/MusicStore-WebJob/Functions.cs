@@ -22,8 +22,8 @@ namespace MusicStore_Webjob
         
         public static void GenerateSample(
        [QueueTrigger("audiosamplemaker")] SampleEntity sampleInQueue,
- [Table("Samples", "{PartitionKey}", "{RowKey}")] SampleEntity sampleInTable,
- [Table("Samples")] CloudTable tableBinding, TextWriter logger)
+       [Table("Samples", "{PartitionKey}", "{RowKey}")] SampleEntity sampleInTable,
+       [Table("Samples")] CloudTable tableBinding, TextWriter logger)
 
   
 
@@ -51,7 +51,7 @@ namespace MusicStore_Webjob
                 using (Stream output = outputBlob.OpenWrite())
                 {
                     CaptureSampleFromAudio(input, output, 20);
-                    outputBlob.Properties.ContentType = "audio/mpeg3";
+                    outputBlob.Properties.ContentType = "audio/mp3";
                 }
 
                 // Update sample date

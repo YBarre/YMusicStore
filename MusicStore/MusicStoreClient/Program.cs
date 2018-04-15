@@ -52,123 +52,164 @@ namespace MusicStoreClient
                 // get the selection from the user
                 Console.WriteLine("\n" + "Please Choose an option: ");
 
-                try { selection = Int32.Parse(Console.ReadLine()); }
-                catch (Exception ex)
-                { Console.WriteLine("Invalid input, please enter a valid number", ex.Message); }
-
-                switch (selection)
+                //try { selection = Int32.Parse(Console.ReadLine()); }
+                //catch (Exception ex)
+                //{ Console.WriteLine("Invalid input, please enter a valid number", ex.Message); }
+                try
                 {
-                    // Gets and displays all samples in table - GET
-                    case 1:
-                        Console.WriteLine(line + " Display all samples: \n");
-                        Console.WriteLine("ID - Title - Artist - Sample URL");
-                        IList<Sample> samples = await getAllSamples();
-                        foreach (Sample sample in samples)
-                        {
-                            Console.WriteLine("{0} --  {1} --  {2} --  {3}",
-                                sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url);
-                        }
-                        break;
-
-                    // Get specific entity from table by id - GET
-                    case 2:
-                        Console.WriteLine(line + " Enter ID of sample to display:");
-                        string id = Console.ReadLine();
-                        HttpOperationResponse<Sample> getResponse = await getSample(id);
-                        if (getResponse.Response.IsSuccessStatusCode)
-                        {
-                            Sample sampleById = getResponse.Body;
-                            Console.WriteLine(" {0}\n {1}\n {2}\n {3}\n",
-                                sampleById.SampleID, sampleById.Title, sampleById.Artist, sampleById.SampleMp3Url);
-                        }
-                        else { Console.WriteLine(" No matching sample found in table by ID"); }
-                        break;
-
-                    // Creates new Sample entity from user input - POST
-                    case 3:
-                        Console.WriteLine(" Enter the song title: ");
-                        string title = Console.ReadLine();
-
-                        Console.WriteLine(" Enter the artist name: ");
-                        string artist = Console.ReadLine();
-
-                        Sample newSample = new Sample()
-                        {
-                            Title = title,
-                            Artist = artist,
-                            SampleMp3Url = null
-                        };
-                        await postSample(newSample);
-                        break;
-
-                    // Updates an existing entity in the table with new info from user input - PUT
-                    case 4:
-                        Console.WriteLine(" Enter ID for sample to update: ");
-                        string updateId = Console.ReadLine();
-
-                        HttpOperationResponse<Sample> getForUpdateResponse = await getSample(updateId);
-                        if (!getForUpdateResponse.Response.IsSuccessStatusCode) { Console.WriteLine(" No matching sample"); }
-                        else
-                        {
-                            Sample sampleForUpdate = getForUpdateResponse.Body;
-                            Console.WriteLine(" Retrieved sample: ");
-                            Console.WriteLine(" {0}\n {1}\n {2}\n {3}\n",
-                                sampleForUpdate.SampleID, sampleForUpdate.Title, sampleForUpdate.Artist, sampleForUpdate.SampleMp3Url);
-
-                            Console.WriteLine(" Enter new song title: ");
-                            string newTitle = Console.ReadLine();
-
-                            Console.WriteLine(" Enter new artist name: ");
-                            string newArtist = Console.ReadLine();
-
-                            await putSample(new Sample()
+                    selection = Int32.Parse(Console.ReadLine());
+                    switch (selection)
+                    {
+                        // Gets and displays all samples in table - GET
+                        case 1:
+                            Console.WriteLine(line + " Display all samples: \n");
+                            Console.WriteLine("ID - Title - Artist - Sample URL");
+                            IList<Sample> samples = await getAllSamples();
+                            foreach (Sample sample in samples)
                             {
-                                SampleID = sampleForUpdate.SampleID,
-                                Title = newTitle,
-                                Artist = newArtist
-                            });
-                        }
-                        break;
+                                Console.WriteLine("{0} ||  {1} ||  {2} ||  {3}",
+                                    sample.SampleID, sample.Title, sample.Artist, sample.SampleMp3Url);
+                            }
+                            break;
 
-                    // Delete a sample from the table - DELETE
-                    case 5:
-                        Console.WriteLine(" Enter ID of sample you want to delete");
-                        string deleteId = Console.ReadLine();
-                        await deleteSample(deleteId);
-                        break;
+                        // Get specific entity from table by id - GET
+                        case 2:
+                            Console.WriteLine(line + " Enter ID of sample to display:");
+                            string id = Console.ReadLine();
+                            HttpOperationResponse<Sample> getResponse = await getSample(id);
+                            if (getResponse.Response.IsSuccessStatusCode)
+                            {
+                                try
+                                {
+                                    Sample sampleById = getResponse.Body;
+                                    Console.WriteLine(" {0}\n {1}\n {2}\n {3}\n",
+                                        sampleById.SampleID, sampleById.Title, sampleById.Artist, sampleById.SampleMp3Url);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("No matching sample found", ex.Message, ex.StackTrace);
+                                }
 
-                    // Upload an mp3 to blob storage - PUT
-                    case 6:
-                        Console.WriteLine(" Enter ID of sample entity you want to upload an mp3 to");
-                        string uploadId = Console.ReadLine();
-                        HttpOperationResponse<Sample> uploadResponse = await getSample(uploadId);
-                        if (!uploadResponse.Response.IsSuccessStatusCode) { Console.WriteLine("No matching entity found by ID input"); }
-                        else
-                        {
-                            Console.WriteLine("Enter full path of file to upload on local filesystem (example format C:/Folder/Filename.ext): ");
-                            string fileName = Console.ReadLine();
-                            if (File.Exists(fileName)) { await uploadAudio(uploadId, fileName); }
-                            else { Console.WriteLine("Invalid file path"); }
-                        }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No matching sample found in table by ID");
+                            }
+                            /*{ Console.WriteLine(" No matching sample found in table by ID"); }*/
+                            break;
 
-                        break;
+                        // Creates new Sample entity from user input - POST
+                        case 3:
+                            Console.WriteLine(" Enter the song title: ");
+                            string title = Console.ReadLine();
 
-                    // Download a sample mp3 from blob storage - GET
-                    case 7:
-                        Console.WriteLine(" Enter ID of sample entity you want to download the sample from: ");
-                        string downloadId = Console.ReadLine();
-                        HttpOperationResponse<Sample> downloadResponse = await getSample(downloadId);
-                        if (!downloadResponse.Response.IsSuccessStatusCode) { Console.WriteLine("No matching entity found by ID input"); }
-                        else
-                        {
-                            Console.WriteLine(" Enter the folder path you would like the sample downloaded to (example format C:/Folder ");
-                            string folderPath = Console.ReadLine();
-                            if (Directory.Exists(folderPath)) { await downloadSample(downloadId, folderPath, downloadResponse.Body); }
-                            else { Console.WriteLine(" Invalid directory path"); }
+                            Console.WriteLine(" Enter the artist name: ");
+                            string artist = Console.ReadLine();
 
-                        }
-                        break;
+                            Sample newSample = new Sample()
+                            {
+                                Title = title,
+                                Artist = artist,
+                                SampleMp3Url = null
+                            };
+                            await postSample(newSample);
+                            break;
+
+                        // Updates an existing entity in the table with new info from user input - PUT
+                        case 4:
+                            Console.WriteLine(" Enter ID for sample to update: ");
+                            string updateId = Console.ReadLine();
+
+                            HttpOperationResponse<Sample> getForUpdateResponse = await getSample(updateId);
+                            if (!getForUpdateResponse.Response.IsSuccessStatusCode) { Console.WriteLine(" No matching sample"); }
+                            else
+                            {
+                                Sample sampleForUpdate = getForUpdateResponse.Body;
+                                Console.WriteLine(" Retrieved sample: ");
+                                Console.WriteLine(" {0}\n {1}\n {2}\n {3}\n",
+                                    sampleForUpdate.SampleID, sampleForUpdate.Title, sampleForUpdate.Artist, sampleForUpdate.SampleMp3Url);
+
+                                Console.WriteLine(" Enter new song title: ");
+                                string newTitle = Console.ReadLine();
+
+                                Console.WriteLine(" Enter new artist name: ");
+                                string newArtist = Console.ReadLine();
+
+                                await putSample(new Sample()
+                                {
+                                    SampleID = sampleForUpdate.SampleID,
+                                    Title = newTitle,
+                                    Artist = newArtist
+                                });
+                            }
+                            break;
+
+                        // Delete a sample from the table - DELETE
+                        case 5:
+                            Console.WriteLine(" Enter ID of sample you want to delete");
+                            string deleteId = Console.ReadLine();
+                            await deleteSample(deleteId);
+                            break;
+
+                        // Upload an mp3 to blob storage - PUT
+                        case 6:
+                            Console.WriteLine(" Enter ID of sample entity you want to upload and update");
+                            string uploadId = Console.ReadLine();
+                            HttpOperationResponse<Sample> uploadResponse = await getSample(uploadId);
+                            if (!uploadResponse.Response.IsSuccessStatusCode) { Console.WriteLine("No matching entity found by ID input"); }
+                            else
+                            {
+                                Console.WriteLine("Enter full path of file (example format C:/Folder/Filename.mp3): ");
+                                string fileName = Console.ReadLine();
+                                if (File.Exists(fileName))
+                                {
+                                    HttpClient client = new HttpClient();
+                                    Uri fPath = new Uri(clientUri + "/api/Data/" + uploadId);
+                                    try
+                                    {
+                                        using (var stream = File.OpenRead(fileName))
+                                        {
+                                            var response = await client.PutAsync(fPath, new StreamContent(stream));
+                                            Console.Out.WriteLine("Upload outcome: {0} \n Reason: {1}", response.StatusCode, response.ReasonPhrase);
+                                        }
+                                        Console.WriteLine("Upload Complete!");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Debug.WriteLine("client - upload Audio: \n{0} \n{1}", ex.Message, ex.StackTrace);
+                                    }
+                                }
+                                //{ await uploadAudio(uploadId, fileName); }
+                                else
+                                { Console.WriteLine("Invalid file path"); }
+                            }
+
+                            break;
+
+                        // Download a sample mp3 from blob storage - GET
+                        case 7:
+                            Console.WriteLine(" Enter ID of sample entity you want to download the sample from: ");
+                            string downloadId = Console.ReadLine();
+                            HttpOperationResponse<Sample> downloadResponse = await getSample(downloadId);
+                            if (!downloadResponse.Response.IsSuccessStatusCode) { Console.WriteLine("No matching entity found by ID input"); }
+                            else
+                            {
+                                Console.WriteLine(" Enter the folder path you would like the sample downloaded to (example format C:/Folder ");
+                                string folderPath = Console.ReadLine();
+                                if (Directory.Exists(folderPath)) { await downloadSample(downloadId, folderPath, downloadResponse.Body); }
+                                else { Console.WriteLine(" Invalid directory path"); }
+
+                            }
+                            break;
+                    }
+
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Invalid input, please enter a valid number", ex.Message);
+                }
+
+
             } while (selection != 0);
         }
 

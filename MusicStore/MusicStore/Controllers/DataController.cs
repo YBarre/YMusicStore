@@ -148,7 +148,7 @@ namespace MusicStore.Controllers
                 var request = HttpContext.Current.Request;
 
                 // Generate unique name for blob
-                string blobName = string.Format("{0}-{1}{2}", Guid.NewGuid(), sampleEntity.Title, ".mp3"); /* !!!CHANGE THIS SO IT SETS THE CORRECT BLOB NAME!!! */
+                string blobName = string.Format("{0}-{1}{2}", Guid.NewGuid(), sampleEntity.Title, ".mp3"); 
 
                 // Instantiate blob
                 var blob = getAudioStorageContainer().GetBlockBlobReference(fullAudioPath + blobName);
@@ -161,6 +161,7 @@ namespace MusicStore.Controllers
                 sampleEntity.Mp3Blob = blobName;
                 sampleEntity.SampleMp3Url = sampleURL;
                 sampleEntity.SampleMp3Blob = null;
+                sampleEntity.SampleDate = DateTime.Now;
 
                 // Create and executy update operation to update the table entry
                 TableOperation updateOperation = TableOperation.InsertOrReplace(sampleEntity);
